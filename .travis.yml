@@ -1,0 +1,23 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -t bog754/fibo -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true bog754/fibo npm test -- --coverage
+
+after_success:
+  - docker build -t bog754/fibo-client ./client
+  - docker built -t bog754/fibo-nginx ./nginx
+  - docker build -t bog754/fibo-server ./server
+  - docker build -t bog754/fibo-worker ./worker
+  # push images to docker hub
+  # docker login
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --pasword-stdin
+  - docker push bog754/fibo-client
+  - docker push bog754/fibo-nginx
+  - docker push bog754/fibo-server
+  - docker push bog754/fibo-worker
