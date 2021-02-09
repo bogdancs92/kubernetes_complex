@@ -11,6 +11,7 @@ function App() {
         <Link to="/">Home</Link>
         <Link to="/otherpage">Other page</Link>
         <div>
+          <h3>Client App Update</h3>
           <Switch>
             <Route path="/otherpage" component={OtherPage} />
             <Route exact path="/" component={Fib} />
